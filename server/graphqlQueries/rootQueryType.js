@@ -77,9 +77,11 @@ module.exports.rootQueryType = new GraphQLObjectType({
                         pushDetail = false
                         if (detail.version_group.name === 'red-blue' || detail.version_group.name === 'yellow') {
                             pushDetail = true
+                        } else {
+                            pushDetail = false
                         }
 
-                        if (args.levelLearnedAtLTE) {
+                        if (args.levelLearnedAtLTE && pushDetail) {
                             if (args.levelLearnedAtLTE && detail.level_learned_at <= args.levelLearnedAtLTE) {
                                 pushDetail = true
                             } else {
