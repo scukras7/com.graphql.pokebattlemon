@@ -87,7 +87,7 @@ module.exports.rootQueryType = new GraphQLObjectType({
                             }
                         }
                         
-                        if (args.moveLearnMethod) {
+                        if (args.moveLearnMethod && pushDetail) {
                             if (args.moveLearnMethod && args.moveLearnMethod === detail.move_learn_method.name) {
                                 pushDetail = true
                             } else {
