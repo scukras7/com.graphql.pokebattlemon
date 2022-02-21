@@ -1,4 +1,4 @@
-const {GraphQLObjectType, GraphQLInt, GraphQLString} = require('graphql');
+const { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLList} = require('graphql');
 
 const MoveType = new GraphQLObjectType({
     name: 'moveType',
@@ -8,6 +8,33 @@ const MoveType = new GraphQLObjectType({
         url: { type: GraphQLString }
     })
 });
+
+const StatType = new GraphQLObjectType({
+    name: 'statType',
+    description: 'Type and quantity of change to apply to a stat based on move selection',
+    fields: () => ({
+        name: { type: GraphQLString },
+        url: { type: GraphQLString }
+    })
+});
+
+const StatChangeType = new GraphQLObjectType({
+    name: 'statChangeType',
+    description: 'The stat changes induced upon move selection where applicable',
+    fields: () => ({
+        change: { type: GraphQLInt },
+        stat: { type: StatType }
+    })
+});
+
+const TargetType = new GraphQLObjectType({
+    name: 'targetType',
+    description: 'This shows the intended target of a pokemon\'s move',
+    fields: () => ({
+        name: { type: GraphQLString },
+        url: { type: GraphQLString }
+    })
+})
 
 module.exports = new GraphQLObjectType({
     name: 'movesDetails',
@@ -19,6 +46,8 @@ module.exports = new GraphQLObjectType({
         power: { type: GraphQLInt },
         pp: { type: GraphQLInt },
         priority: { type: GraphQLInt },
-        type: { type: MoveType }
+        type: { type: MoveType },
+        stat_changes: { type: new GraphQLList(StatChangeType) },
+        target: { type: TargetType }
     })
 });
