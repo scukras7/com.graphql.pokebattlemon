@@ -6,6 +6,7 @@ const LocationAreaEncountersType = require('../graphqlTypes/LocationAreaEncounte
 const PokemonType = require('../graphqlTypes/PokemonType');
 const StatsType = require('../graphqlTypes/StatsType');
 const MovesType = require('../graphqlTypes/MovesType');
+const TypeModifiersType = require('../graphqlTypes/TypeModifiersType');
 
 const collections = {
     encounterMethods: 'encounter_methods',
@@ -13,7 +14,8 @@ const collections = {
     locationAreaEncounters: 'location_area_encounters',
     pokemon: 'pokemon',
     stats: 'stats',
-    moves: 'moves'
+    moves: 'moves',
+    typeModifiers: 'type_modifiers'
 };
 
 const connectTobDb = async () => {
@@ -141,6 +143,25 @@ module.exports.rootQueryType = new GraphQLObjectType({
                     query = { id: { $in: args.id }, name: { $in: args.name } };
                     
                 return await DbService.getDb().collection(collections.moves).find(query).toArray();
+            }
+        },
+        typeModifiers: {
+            type: new GraphQLList(TypeModifiersType),
+            description: 'Type modifiers to apply to damage calculation',
+            args: {
+                attackName: { type: GraphQLString }
+            },
+            resolve: async (parent, args) => {
+                let query;
+
+                console.log(args)
+
+                if (args.attackName)
+                    query = { attackName: args.attackName };
+                else
+                    query = {};
+
+                return await DbService.getDb().collection(collections.typeModifiers).find(query).toArray();
             }
         }
     })
